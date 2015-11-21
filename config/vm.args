@@ -1,0 +1,6 @@
+-sname mongopool
+
+-setcookie mongopool_cookie
+
++K true
++A30
