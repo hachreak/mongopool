@@ -1,9 +1,11 @@
 mongopool
 =====
 
-An OTP application
+mongopool: mongodb + poolboy
+
+A MongoDB connection pool server application.
 
 Build
 -----
 
-    $ rebar3 compile
+    $ utils/rebar3 compile

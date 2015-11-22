@@ -1,5 +1,5 @@
 {application, 'mongopool',
- [{description, "An OTP application"},
+ [{description, "mongopool: mongodb + poolboy"},
   {vsn, "0.1.0"},
   {registered, []},
   {mod, {'mongopool_app', []}},
