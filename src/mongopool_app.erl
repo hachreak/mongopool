@@ -54,7 +54,7 @@ stop(_State) ->
 -spec insert(term(), mongo:collection(), A) -> A.
 insert(PoolName, Collection, Doc) ->
   poolboy:transaction(PoolName, fun(Worker) ->
-    gen_server:call(Worker, {insert, Collection, Doc})
+    gen_server:cast(Worker, {insert, Collection, Doc})
   end).
 
 %% @doc Update a document into the collection.
