@@ -1,0 +1,14 @@
+mongopool:
+  build: .
+  command: /var/www/utils/rebar3 shell
+  volumes:
+    - .:/var/www:rw
+  links:
+    - mongo:db
+mongo:
+  image: mongo:3.0.4
+  volumes:
+    - ./tmp/db:/data/db:rw
+  ports:
+    - "27017:27017"
+  command: --smallfiles --rest --auth --dbpath /data/db
