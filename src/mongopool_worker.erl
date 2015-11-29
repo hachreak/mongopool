@@ -39,12 +39,7 @@ start_link(Args) ->
 init(Args) ->
   process_flag(trap_exit, true),
   application:ensure_all_started(mongodb),
-  Hostname = proplists:get_value(hostname, Args),
-  Database = proplists:get_value(database, Args),
-  Username = proplists:get_value(username, Args),
-  Password = proplists:get_value(password, Args),
-  {ok, Connection} = mongo:connect([{database, Database}, {host, Hostname},
-                  {login, Username}, {password, Password}]),
+  {ok, Connection} = mongo:connect(Args),
   {ok, #state{connection=Connection}}.
 
 handle_call({find_one, Collection, Selector, Args}, _From,
