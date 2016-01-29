@@ -5,6 +5,7 @@ mongopool: mongodb + poolboy
 
 A MongoDB connection pool server application.
 
+
 Configuration
 -------------
 
@@ -55,3 +56,15 @@ Build
 -----
 
     $ utils/rebar3 compile
+
+
+Deprecated
+----------
+
+`MongoDB-Erlang >= 0.8.2` change API and inglobe the use of `poolboy`.
+So, after this version, `mongopool` became incompatible and useless.
+
+For that reason, if you want use a recent release of the driver, please use
+directly [MongoDB-Erlang](https://github.com/comtihon/mongodb-erlang).
+
+Thanks for use `MongoPool`.
