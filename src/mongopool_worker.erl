@@ -36,10 +36,25 @@
 start_link(Args) ->
   gen_server:start_link(?MODULE, Args, []).
 
-init(Args) ->
+%% Wait mongodb server is available for connections
+wait_connection(_, 0) ->
+  throw(mongodb_connection_error);
+wait_connection(Args, Remaining_retries) ->
+  error_logger:info_msg("Remaining retries ~p~n", [Remaining_retries]),
+  case mongo:connect(Args) of
+    {ok, Connection} ->
+      error_logger:info_msg("Connected!~n"),
+      Connection;
+    _Rest ->
+      error_logger:info_msg("Sleep..~n"),
+      timer:sleep(2000),
+      wait_connection(Args, Remaining_retries - 1)
+  end.
+
+init({Args, Retries}) ->
   process_flag(trap_exit, true),
   application:ensure_all_started(mongodb),
-  {ok, Connection} = mongo:connect(Args),
+  Connection = wait_connection(Args, Retries),
   {ok, #state{connection=Connection}}.
 
 handle_call({find_one, Collection, Selector, Args}, _From,

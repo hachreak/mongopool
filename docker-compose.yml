@@ -1,6 +1,6 @@
 mongopool:
   build: .
-  command: /var/www/utils/rebar3 shell
+  command: /var/www/demo.sh
   volumes:
     - .:/var/www:rw
   links:

@@ -12,6 +12,7 @@ Configuration
 ```erlang
 [
   {mongopool, [
+    {retry, 20},
     {pools, [
       {mypool, [
         {size, 10},
@@ -30,6 +31,11 @@ Configuration
 
 Note: if you doesn't enable the authorization on mongodb, you don't need to
 specify `username` and `password`.
+
+The option `retry` specify how many times the workers should try to connect
+if it's startup step fail.
+It's very useful when the erlang server is faster than mongodb server
+(especially the case when mongodb start the first time).
 
 Note: you can specify all the pool that you need.
 

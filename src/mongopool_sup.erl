@@ -27,7 +27,7 @@
 -behaviour(supervisor).
 
 %% API
--export([start_link/0, start_link/1]).
+-export([start_link/0, start_link/2]).
 
 %% Supervisor callbacks
 -export([init/1]).
@@ -41,8 +41,8 @@
 start_link() ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
-start_link(Pools) ->
-    supervisor:start_link({local, ?SERVER}, ?MODULE, Pools).
+start_link(Pools, Retries) ->
+    supervisor:start_link({local, ?SERVER}, ?MODULE, {Pools, Retries}).
 
 %%====================================================================
 %% Supervisor callbacks
@@ -51,8 +51,9 @@ start_link(Pools) ->
 %% Child :: {Id,StartFunc,Restart,Shutdown,Type,Modules}
 init([]) ->
   {ok, Pools} = application:get_env(mongopool, pools),
-  init(Pools);
-init(Pools) ->
+  Retries = application:get_env(mongopool, retry, 20),
+  init({Pools, Retries});
+init({Pools, Retries}) ->
   RestartStrategy = {
     one_for_all,
     0, % MaxRestart,
@@ -62,7 +63,8 @@ init(Pools) ->
                 fun({Name, SizeArgs, WorkerArgs}) ->
                     PoolArgs = [{name, {local, Name}},
                                 {worker_module, mongopool_worker}] ++ SizeArgs,
-                    poolboy:child_spec(Name, PoolArgs, WorkerArgs)
+                    poolboy:child_spec(
+                      Name, PoolArgs, {WorkerArgs, Retries})
                 end, Pools),
   {ok, {RestartStrategy, PoolSpecs}}.
 

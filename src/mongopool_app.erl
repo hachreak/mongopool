@@ -27,7 +27,7 @@
 -behaviour(application).
 
 %% Application callbacks
--export([start/2
+-export([start/2, start/0
         ,stop/1]).
 
 -export([insert/3, update/4, update/5, delete/3, delete_one/3,
@@ -37,6 +37,9 @@
 %%====================================================================
 %% API
 %%====================================================================
+
+start() ->
+  start([], []).
 
 start(_StartType, _StartArgs) ->
     mongopool_sup:start_link().
