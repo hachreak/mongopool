@@ -27,8 +27,7 @@
 -behaviour(application).
 
 %% Application callbacks
--export([start/2, start/0
-        ,stop/1]).
+-export([start/2, start/0, stop/1]).
 
 -export([insert/3, update/4, update/5, delete/3, delete_one/3,
          find_one/3, find_one/4, find/3, find/4, count/3, count/4,
