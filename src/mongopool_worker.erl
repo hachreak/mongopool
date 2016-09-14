@@ -97,7 +97,7 @@ handle_info(_Info, State) ->
   {noreply, State}.
 
 terminate(_Reason, #state{connection=Connection}) ->
-  ok = mongodb:disconnect(Connection),
+  ok = mongo:disconnect(Connection),
   ok.
 
 code_change(_OldVsn, State, _Extra) ->
